@@ -1,4 +1,4 @@
-package main
+package blockchain
 
 import (
 	"bytes"
@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-// Block keeps block headers
 type Block struct {
 	Timestamp     int64
 	Data          []byte
@@ -15,7 +14,6 @@ type Block struct {
 	Hash          []byte
 }
 
-// SetHash calculates and sets block hash
 func (b *Block) SetHash() {
 	timestamp := []byte(strconv.FormatInt(b.Timestamp, 10))
 	headers := bytes.Join([][]byte{b.PrevBlockHash, b.Data, timestamp}, []byte{})
@@ -24,14 +22,12 @@ func (b *Block) SetHash() {
 	b.Hash = hash[:]
 }
 
-// NewBlock creates and returns Block
 func NewBlock(data string, prevBlockHash []byte) *Block {
 	block := &Block{time.Now().Unix(), []byte(data), prevBlockHash, []byte{}}
 	block.SetHash()
 	return block
 }
 
-// NewGenesisBlock creates and returns genesis Block
 func NewGenesisBlock() *Block {
 	return NewBlock("Genesis Block", []byte{})
 }
